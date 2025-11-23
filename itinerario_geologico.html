@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Itinerario Geologico Martina Franca</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  html, body { height: 100%; margin:0; font-family: 'Segoe UI', sans-serif; background: #f4f4f6; }
+  #map { height: 100%; }
+
+  /* Pulsanti flottanti moderni con descrizione */
+  .floating-buttons {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+  }
+  .floating-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: none;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .floating-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,1);
+  }
+
+  /* Popup card moderna */
+  .popup-card {
+    border-radius: 14px;
+    padding: 12px;
+    width: 200px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .popup-card b { font-size: 15px; display:block; margin-bottom:5px; }
+  .popup-card a {
+    display: inline-block;
+    margin-top: 6px;
+    text-decoration: none;
+    color: #0078d4;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .popup-card a:hover { color: #005a9e; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="floating-buttons">
+  <button onclick="openFile('video.mp4')">🎬 Video</button>
+  <button onclick="openFile('presentazione.pptx')">📊 Presentazione</button>
+  <button onclick="openFile('documento.pdf')">📄 PDF</button>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([40.715, 17.333], 13);
+
+  // Tile moderni chiari
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Lista luoghi
+  const locations = [
+    { coords: [40.7147, 17.3334], name: "Centro Storico", desc: "Passeggia tra i vicoli storici e scopri i calcari fossili tipici della zona." },
+    { coords: [40.703, 17.320], name: "Bosco delle Pianelle", desc: "Foresta unica con doline e lapiés, immersa nella natura." },
+    { coords: [40.725, 17.355], name: "Valle d'Itria", desc: "Dolci colline e calcari stratificati, paesaggio iconico della regione." },
+    { coords: [40.735, 17.340], name: "Grotta Monte Fellone", desc: "Stalattiti e colate calcitiche in una grotta suggestiva." },
+    { coords: [40.710, 17.300], name: "Lama d'Antoglia", desc: "Formazioni geologiche spettacolari tra dolomie e brecce naturali." }
+  ];
+
+  // Aggiunta marker dei luoghi
+  locations.forEach(loc => {
+    const marker = L.marker(loc.coords, {
+      icon: L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+        iconSize: [32,32],
+        iconAnchor: [16,32],
+        popupAnchor: [0,-32]
+      })
+    }).addTo(map);
+
+    marker.bindPopup(`
+      <div class="popup-card">
+        <b>${loc.name}</b>
+        <p>${loc.desc}</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=${loc.coords[0]},${loc.coords[1]}" target="_blank">Apri con Maps</a>
+      </div>
+    `);
+  });
+
+  // Marker utente “Tu sei qui”
+  map.locate({setView: true, maxZoom:16});
+  map.on('locationfound', e => {
+    L.marker(e.latlng, {
+      icon: L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/252/252025.png', // colore differente
+        iconSize: [32,32],
+        iconAnchor: [16,32],
+        popupAnchor: [0,-32]
+      })
+    }).addTo(map).bindPopup(`
+      <div class="popup-card">
+        <b>Tu sei qui</b>
+      </div>
+    `);
+  });
+
+  function openFile(file) { window.open(file, '_blank'); }
+</script>
+</body>
+</html>
