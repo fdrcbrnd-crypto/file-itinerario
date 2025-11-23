@@ -66,9 +66,8 @@
 <div id="map"></div>
 
 <div class="floating-buttons">
-  <button onclick="openFile('video.mp4')">🎬 Video</button>
-  <button onclick="openFile('https://1drv.ms/p/c/55485df2221745d0/EfpCJVbXGL9MoHtClJIE46YBLFbLblKTHqmQJa_bfRQCuQ?e=K0qspD')">📊 Presentazione</button>
-  <button onclick="openFile('https://1drv.ms/w/c/55485df2221745d0/ETr2Z5gGVdJOrvBLX-K2PosBgmYPEm_p1gMtcnZnIm4iOQ?e=yTKInE')">📄 documento</button>
+  <button onclick="openFile('https://1drv.ms/p/c/55485df2221745d0/EUDyMwk8lqpErzIJFMdNji4BdjHOVf-UlneiR4D1In2_xA?e=aFpytS')">Presentazione</button>
+  <button onclick="openFile('https://1drv.ms/w/c/55485df2221745d0/ETr2Z5gGVdJOrvBLX-K2PosBgmYPEm_p1gMtcnZnIm4iOQ?e=yTKInE')">Documento</button>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -82,13 +81,13 @@
     maxZoom: 19
   }).addTo(map);
 
-  // Lista luoghi
+  // Lista luoghi con link a Maps
   const locations = [
-    { coords: [40.7147, 17.3334], name: "Centro Storico", desc: "Passeggia tra i vicoli storici e scopri i calcari fossili tipici della zona." },
-    { coords: [40.703, 17.320], name: "Bosco delle Pianelle", desc: "Foresta unica con doline e lapiés, immersa nella natura." },
-    { coords: [40.725, 17.355], name: "Valle d'Itria", desc: "Dolci colline e calcari stratificati, paesaggio iconico della regione." },
-    { coords: [40.735, 17.340], name: "Grotta Monte Fellone", desc: "Stalattiti e colate calcitiche in una grotta suggestiva." },
-    { coords: [40.710, 17.300], name: "Lama d'Antoglia", desc: "Formazioni geologiche spettacolari tra dolomie e brecce naturali." }
+    { coords: [40.70424, 17.33487], link: "https://maps.app.goo.gl/ZwyAUJnuqPwZ7EcB7", name: "Centro Storico", desc: "Passeggia tra i vicoli storici e scopri i calcari fossili tipici della zona." },
+    { coords: [40.65229, 17.22059], link: "https://maps.app.goo.gl/LX2wu4Jk1VwK9G4o7", name: "Bosco delle Pianelle", desc: "Foresta unica con doline e lapiés, immersa nella natura." },
+    { coords: [40.70630, 17.34060], link: "https://maps.app.goo.gl/Cyc4c4RAgFT5nhU67", name: "Valle d'Itria (zona approssimativa)", desc: "Dolci colline e calcari stratificati, paesaggio iconico della regione." },
+    { coords: [40.71621, 17.32063], link: "https://maps.app.goo.gl/HsNyUZbjCxe1W35k9", name: "Grotta Monte Fellone", desc: "Stalattiti e colate calcitiche in una grotta suggestiva." },
+    { coords: [40.54614, 17.43070], link: "https://maps.app.goo.gl/Zn2J5NGjpmJbH7ai8", name: "Gravina di Riggio", desc: "Incisione carsica con canyon, grotte rupestri e vecchie comunità rupestri." }
   ];
 
   // Aggiunta marker dei luoghi
@@ -106,7 +105,7 @@
       <div class="popup-card">
         <b>${loc.name}</b>
         <p>${loc.desc}</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=${loc.coords[0]},${loc.coords[1]}" target="_blank">Apri con Maps</a>
+        <a href="${loc.link}" target="_blank">Apri con Maps</a>
       </div>
     `);
   });
@@ -116,7 +115,7 @@
   map.on('locationfound', e => {
     L.marker(e.latlng, {
       icon: L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/252/252025.png', // colore differente
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/252/252025.png',
         iconSize: [32,32],
         iconAnchor: [16,32],
         popupAnchor: [0,-32]
